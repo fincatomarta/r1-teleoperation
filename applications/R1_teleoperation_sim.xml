@@ -1,0 +1,74 @@
+<application>
+   <name>R1_teleoperation_SIM</name>
+   <dependencies>
+   </dependencies>
+
+   <!-- modules -->
+
+   <module>
+      <name>ros2_launch.sh</name>
+      <parameters> r1Mk3_gz_sim.launch.py world:=/usr/local/src/robot/grasping-baselines/gazebo/worlds/gb-gz-r1.world use_sim_time:=true</parameters>
+      <environment>YARP_CLOCK=$ENV{YARP_DEF_CLOCK}</environment>
+      <workdir>$ENV{TOUR_GUIDE_ROBOT_SOURCE_DIR}/app/navigation2/launch/</workdir>
+      <node>console</node>
+   </module>
+
+   <module>
+      <name>mc-ergocub-cartesian-bimanual</name>
+      <parameters>--from config_r1.ini</parameters>
+      <environment></environment>
+      <workdir>/usr/local/src/robot/ergocub-cartesian-control/src/ergocub_cartesian_bimanual/app/conf/sim/</workdir>
+      <node>console</node>
+   </module>
+
+   <module>
+         <name>mc-ergocub-head-controller</name>
+         <parameters>--from config_sim.ini</parameters>
+         <environment></environment>
+         <workdir>/usr/local/src/robot/ergocub-cartesian-control/src/ergocub_head_controller/app/conf/</workdir>
+         <node>console</node>
+      </module>
+
+    <module>
+      <name>ergocub-finger-controller</name>
+      <parameters>--from ergocub_finger_controller_sim.ini</parameters>
+      <environment></environment>
+      <workdir>/usr/local/src/robot/ergocub-cartesian-control/src/ergocub_finger_controller/config/</workdir>
+      <node>console</node>
+   </module>
+
+    <module>
+        <tag>motorgui</tag>
+        <name>yarpmotorgui</name>
+        <node>console</node>
+        <parameters>--robot r1mk3Sim</parameters>
+    </module>
+    <module>
+        <tag>frameTransformerServer</tag>
+        <name>yarpdev</name>
+        <node>win</node>
+        <parameters>--device frameTransformServer --filexml_option fts_yarp_only.xml</parameters>
+    </module>
+    <module>
+        <tag>openxrheadset</tag>
+        <name>yarpdev</name>
+        <node>win</node>
+        <parameters>--device openxrheadset --split_eye_ports false --inter_camera_distance 0.093 --eye_z_position -0.7</parameters>
+        <depends>frameTransformerServer</depends>
+    </module>
+    <module>
+        <tag>OpenXrFrameViz</tag>
+        <name>OpenXrFrameViz</name>
+        <node>win</node>
+        <depends>openxrheadset</depends>
+    </module>
+
+
+   <!-- connections -->
+   <connection>
+       <from>/r1mk3Sim/depthCamera/stereo/rgbImage:o</from>
+       <to>/OpenXrHeadset/display:i</to>
+       <protocol>fast_tcp+send.portmonitor+file.image_compression_ffmpeg+recv.portmonitor+file.image_compression_ffmpeg+type.dll+custom_enc.libx264+custom_dec.h264</protocol>
+   </connection>
+
+</application>
