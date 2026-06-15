@@ -5,6 +5,12 @@
 
 	
    <!-- modules -->
+   <module>
+      <name>./start_robot.sh</name>
+      <parameters></parameters>
+      <workdir>/usr/local/src/robot/r1-teleoperation/launch </workdir>
+      <node>localhost</node>
+   </module>
 
     <module>
         <name>yarprobotinterface</name>
@@ -12,12 +18,18 @@
         <workdir>$ENV{ROBOT_CODE}/robots-configuration/R1SN003/</workdir>
         <node>r1-base</node>
      </module>
-     <module>
-        <name>yarprobotinterface</name>
-        <parameters>--context navigation2 --from realsense2_ir.ini</parameters>
-        <node>r1-torso</node>
-     </module>
-    
+     <!-- <module> -->
+     <!--    <name>yarprobotinterface</name> -->
+     <!--    <parameters>--context navigation2 --from realsense2_remote_fast.ini</parameters> -->
+     <!--    <node>r1-torso</node> -->
+     <!-- </module> -->
+
+    <module>
+       <name>yarpdev</name>
+       <parameters>--device openCVGrabber --camera 0 --name /stereo/rgb --width 1344 --height 376</parameters>
+       <node>r1-torso</node>
+    </module>
+         
     <module>
        <name>yarprobotinterface</name>
        <parameters>--context navigation2 --from lidar_compressed.ini</parameters>
@@ -92,21 +104,22 @@
     <module>
         <tag>OpenXrFrameViz</tag>
         <name>OpenXrFrameViz</name>
-        <node>win</node>
+        <node>opt</node>
         <depends>openxrheadset</depends>
     </module>
+    <module>
+          <name>./stop_robot.sh</name>
+          <parameters></parameters>
+          <workdir>/usr/local/src/robot/r1-teleoperation/launch </workdir>
+          <node>opt</node>
+       </module>
 	
 
    <!-- connections -->
    <connection>
-       <from>/depthCamera/ir:o</from>
+       <from>/stereo/rgb</from>
        <to>/meta/joypad/display:i</to>
        <protocol>mjpeg</protocol>
-   </connection>
-   <connection>
-       <from>/joystickCtrl:o</from>
-       <to>/baseControl/input/joystick/data:i</to>
-       <protocol>tcp+recv.portmonitor+type.dll+file.joy2vel</protocol>
    </connection>
 	   
 </application>
