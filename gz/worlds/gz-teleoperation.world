@@ -74,6 +74,15 @@
       </include>
     </model>
 
+  <model name="DESK1">
+    <include>
+    <uri>
+    https://fuel.gazebosim.org/1.0/OpenRobotics/models/Desk
+    </uri>
+    <pose>0.530772 0.8 0 0 0 -1.57</pose>
+    </include>
+    </model>
+
     <model name="MUSTARD">
       <include>
         <uri>model://gb_gazebo_mustard</uri>
