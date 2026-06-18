@@ -10,7 +10,7 @@
       <parameters> r1Mk3_gz_sim.launch.py world:=/usr/local/src/robot/r1-teleoperation/gz/worlds/gz-teleoperation.world use_sim_time:=true</parameters>
       <environment>YARP_CLOCK=$ENV{YARP_DEF_CLOCK}</environment>
       <workdir>$ENV{TOUR_GUIDE_ROBOT_SOURCE_DIR}/app/navigation2/launch/</workdir>
-      <node>console</node>
+      <node>ecc</node>
    </module>
 
    <module>
@@ -18,7 +18,7 @@
       <parameters>--from config_r1.ini</parameters>
       <environment></environment>
       <workdir>/usr/local/src/robot/ergocub-cartesian-control/src/ergocub_cartesian_bimanual/app/conf/sim/</workdir>
-      <node>console</node>
+      <node>ecc</node>
    </module>
 
    <module>
@@ -26,7 +26,7 @@
          <parameters>--from config_sim.ini</parameters>
          <environment></environment>
          <workdir>/usr/local/src/robot/ergocub-cartesian-control/src/ergocub_head_controller/app/conf/</workdir>
-         <node>console</node>
+         <node>ecc</node>
       </module>
 
     <module>
@@ -34,7 +34,7 @@
       <parameters>--from r1_finger_controller_sim.ini</parameters>
       <environment></environment>
       <workdir>/usr/local/src/robot/ergocub-cartesian-control/src/ergocub_finger_controller/config/</workdir>
-      <node>console</node>
+      <node>ecc</node>
    </module>
 
     <module>
